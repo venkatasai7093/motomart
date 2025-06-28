@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Random;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -15,7 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true,nullable = false)
+    @Column(nullable = false)
     private String username;
 
     @Column(unique = true,nullable = false)
@@ -29,4 +31,12 @@ public class User {
 
     private String profilePictureUrl;
     private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        if (id == null) {
+            Random random = new Random();
+            this.id = (long)(10000 + random.nextInt(90000));  // Generate 5-digit ID as Long
+        }
+    }
 }

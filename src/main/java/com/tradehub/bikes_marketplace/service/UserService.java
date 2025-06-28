@@ -14,9 +14,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserDto getUserById(Long id){
-        User user = userRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("User not found"));
+
+    public UserDto getUserByEmail(String email){
+        User user = userRepository.findByEmail(email);
         return userMapper.toDto(user);
     }
 }

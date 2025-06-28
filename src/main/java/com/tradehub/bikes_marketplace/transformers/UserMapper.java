@@ -1,16 +1,21 @@
 package com.tradehub.bikes_marketplace.transformers;
 
+import com.tradehub.bikes_marketplace.dto.BikeCreateDto;
+import com.tradehub.bikes_marketplace.dto.BikeResponseDto;
+import com.tradehub.bikes_marketplace.dto.RegisterRequestDto;
 import com.tradehub.bikes_marketplace.dto.UserDto;
-import com.tradehub.bikes_marketplace.enums.Role;
+import com.tradehub.bikes_marketplace.model.Bike;
 import com.tradehub.bikes_marketplace.model.User;
-import com.tradehub.bikes_marketplace.util.ConversionUtils;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    User toEntity(UserDto dto);
+    User toEntity(RegisterRequestDto dto);
     UserDto toDto(User user);
+
+    Bike toEntity(BikeCreateDto dto);
+
+    BikeResponseDto toResponseDto(Bike bike);
 
 }
