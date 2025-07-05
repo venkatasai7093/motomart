@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Bike Marketplace WebSocket Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+</head>
+<body>
+<h2>Bike Marketplace WebSocket Test</h2>
+
+<label>Category (e.g., mountain, road):</label>
+<input id="categoryInput" type="text" value="mountain" />
+<button onclick="connect()">Connect & Subscribe</button>
+<br/><br/>
+
+<label>Message:</label>
+<input id="messageInput" type="text" value="New bike listed!" />
+<button onclick="sendMessage()">Send</button>
+
+<div id="output" style="margin-top:20px; border:1px solid #ccc; padding:10px; height:200px; overflow:auto;"></div>
+
+<script>
+    let stompClient = null;
+    let subscribedCategory = null;
+
+    function connect() {
+      subscribedCategory = document.getElementById('categoryInput').value.trim();
+      if (!subscribedCategory) {
+        alert('Please enter a category');
+        return;
+      }
+
+      const socket = new SockJS('/ws/notifications');
+      stompClient = Stomp.over(socket);
+
+      stompClient.connect({}, frame => {
+        log('Connected: ' + frame);
+        stompClient.subscribe(`/topic/bikes/${subscribedCategory}`, message => {
+          log('📩 Received: ' + message.body);
+        });
+      }, error => {
+        log('Connection error: ' + error);
+      });
+    }
+
+    function sendMessage() {
+      if (!stompClient || !stompClient.connected) {
+        alert('Connect first!');
+        return;
+      }
+      const message = {
+        category: subscribedCategory,
+        message: document.getElementById('messageInput').value
+      };
+      stompClient.send('/app/notify', {}, JSON.stringify(message));
+      log('📤 Sent: ' + JSON.stringify(message));
+    }
+
+    function log(msg) {
+      const output = document.getElementById('output');
+      const p = document.createElement('p');
+      p.textContent = msg;
+      output.appendChild(p);
+      output.scrollTop = output.scrollHeight;
+    }
+</script>
+</body>
+</html>

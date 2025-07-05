@@ -5,13 +5,12 @@ import com.tradehub.bikes_marketplace.dto.LoginRequestDto;
 import com.tradehub.bikes_marketplace.dto.RegisterRequestDto;
 import com.tradehub.bikes_marketplace.model.User;
 import com.tradehub.bikes_marketplace.repository.UserRepository;
-import com.tradehub.bikes_marketplace.util.JwtUtils;
+import com.tradehub.bikes_marketplace.security.JwtUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Random;
 
 @Service
 @AllArgsConstructor

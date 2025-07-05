@@ -1,7 +1,8 @@
 package com.tradehub.bikes_marketplace.config;
 
+import com.tradehub.bikes_marketplace.security.JwtAuthenticationFilter;
 import com.tradehub.bikes_marketplace.service.CustomUserDetailsService;
-import com.tradehub.bikes_marketplace.util.JwtUtils;
+import com.tradehub.bikes_marketplace.security.JwtUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +36,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(
+                                "/", "/index.html",             // 🟢 allow root page
+                                "/api/auth/**",                 // your auth routes
+                                "/ws/**", "/app/**", "/topic/**"
+                        ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/seller/**").hasRole("SELLER")
                         .requestMatchers("/api/buyer/**").hasRole("BUYER")

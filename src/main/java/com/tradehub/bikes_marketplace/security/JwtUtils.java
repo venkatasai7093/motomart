@@ -1,10 +1,8 @@
-package com.tradehub.bikes_marketplace.util;
+package com.tradehub.bikes_marketplace.security;
 
-import com.tradehub.bikes_marketplace.model.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
